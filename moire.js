@@ -1,5 +1,5 @@
-var radiusIncrease = 20
-var lineWeight = 10;
+var radiusIncrease = 40;
+var lineWeight = 20;
 var colorJitter = 1;
 var numCircles = 30;
 
