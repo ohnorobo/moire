@@ -1,6 +1,7 @@
 var radiusIncrease = 20
 var lineWeight = 10;
-var colorJitter = 2;
+var colorJitter = 1;
+var numCircles = 30;
 
 function drawRing(set, x, y, radius, color, opacity) {
   var ring = new Path.Circle({
@@ -14,53 +15,63 @@ function drawRing(set, x, y, radius, color, opacity) {
 }
 
 function drawMoire(point) {
-  var moireRings = []
-  
-  for (var i = 0; i < 75; i++) {
+  var moireRingsBlack = []
+  var moireRingsColor = [];
+  for (var i = 0; i < numCircles; i++) {
     radius = i * radiusIncrease;
-    drawRing(moireRings,
+    
+    project.activeLayer = project.layers[0];
+      
+    drawRing(moireRingsColor,
              point.x-colorJitter*2,
              point.y,
              radius,
              'cyan',
-             0.75)
-    drawRing(moireRings,
+             0.5)
+    drawRing(moireRingsColor,
              point.x-colorJitter,
              point.y,
              radius,
              'blue',
-             0.75) 
-    drawRing(moireRings,
+             0.5) 
+    drawRing(moireRingsColor,
              point.x+colorJitter*2,
              point.y,
              radius,
              'yellow',
-             0.75) 
-    drawRing(moireRings,
+             0.5) 
+    drawRing(moireRingsColor,
              point.x+colorJitter,
              point.y,
              radius,
              'red',
-             0.75)
+             0.5)
+             
+    project.activeLayer = project.layers[1];
 
-    drawRing(moireRings,
+    drawRing(moireRingsBlack,
              point.x,
              point.y,
              radius,
              'black',
-             1) 
+             1)
   }
-  return moireRings;
+  
+  var colorGroup = new Group(moireRingsColor);
+  var blackGroup = new Group(moireRingsBlack);
+  
+  moires = [blackGroup, colorGroup];
+  return moires;
 }
 
 function moveMoire(moire, point) {
-  for (var i = 0; i < moire.length; i++) {
-    var ring = moire[i];
-    ring.position = point
-  }
+  moire[0].position = point;
+  moire[1].position = point;
 }
 
 var centerPoint = paper.view.center;
+
+project.addLayer(new Layer());
 
 var moire1 = drawMoire(centerPoint);
 var moire2 = drawMoire(centerPoint);
@@ -70,6 +81,5 @@ view.onMouseMove = function(event) {
   var avgY = (event.point.y + centerPoint.y) / 2;
   var avgPoint = new Point(avgX, avgY);
 
-  moveMoire(moire2, avgPoint);
+  moveMoire(moire1, avgPoint);
 }
-
