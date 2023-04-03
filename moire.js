@@ -1,7 +1,12 @@
 var radiusIncrease = 40;
 var lineWeight = 20;
-var colorJitter = 1;
+var colorJitter = 3;
 var numCircles = 30;
+
+var blackLayer = new paper.Layer({ name: "black" });
+paper.project.addLayer(blackLayer);
+var colorLayer = new paper.Layer({ name: "color" });
+paper.project.addLayer(colorLayer);
 
 function drawRing(set, x, y, radius, color, opacity) {
   var ring = new Path.Circle({
@@ -19,8 +24,6 @@ function drawMoire(point) {
   var moireRingsColor = [];
   for (var i = 0; i < numCircles; i++) {
     radius = i * radiusIncrease;
-    
-    project.activeLayer = project.layers[0];
       
     drawRing(moireRingsColor,
              point.x-colorJitter*2,
@@ -46,8 +49,6 @@ function drawMoire(point) {
              radius,
              'red',
              0.5)
-             
-    project.activeLayer = project.layers[1];
 
     drawRing(moireRingsBlack,
              point.x,
@@ -56,9 +57,15 @@ function drawMoire(point) {
              'black',
              1)
   }
-  
+
+  var colorLayer = project.layers['color'];
+  colorLayer.activate();
   var colorGroup = new Group(moireRingsColor);
+
+  var blackLayer = project.layers['black'];
+  blackLayer.activate();
   var blackGroup = new Group(moireRingsBlack);
+  blackLayer.bringToFront();
   
   moires = [blackGroup, colorGroup];
   return moires;
