@@ -2,6 +2,7 @@ var radiusIncrease = 40;
 var lineWeight = 20;
 var colorJitter = 3;
 var numCircles = 30;
+var colorJitterOpacity = .75;
 
 var blackLayer = new paper.Layer({ name: "black" });
 paper.project.addLayer(blackLayer);
@@ -16,6 +17,7 @@ function drawRing(set, x, y, radius, color, opacity) {
     });
     ring.strokeWidth = lineWeight;
     ring.opacity = opacity;
+    ring.blendMode = 'multiply';
     set.push(ring);
 }
 
@@ -30,25 +32,25 @@ function drawMoire(point) {
              point.y,
              radius,
              'cyan',
-             0.5)
+             colorJitterOpacity)
     drawRing(moireRingsColor,
              point.x-colorJitter,
              point.y,
              radius,
              'blue',
-             0.5) 
+             colorJitterOpacity) 
     drawRing(moireRingsColor,
              point.x+colorJitter*2,
              point.y,
              radius,
              'yellow',
-             0.5) 
+             colorJitterOpacity) 
     drawRing(moireRingsColor,
              point.x+colorJitter,
              point.y,
              radius,
              'red',
-             0.5)
+             colorJitterOpacity)
 
     drawRing(moireRingsBlack,
              point.x,
