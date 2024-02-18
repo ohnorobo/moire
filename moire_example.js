@@ -107,9 +107,9 @@ function moveMoire(e) {
 
   moveMoire(moire1, avgPoint);
 
-  console.log(moire1);
+  console.log("new moire", moire1);
 
-  paper.view.draw();
+  paper.view.update();
 }
 
 window.onload = function() {

@@ -23,6 +23,21 @@
 		path.lineTo(start.add([ 200, -50 ]));
 		// Draw the view now:
 		paper.view.draw();
+
+        // Create a simple drawing tool:
+        var tool = new paper.Tool();
+        var path;
+
+        // Define a mousedown and mousedrag handler
+        tool.onMouseDown = function(event) {
+            path = new paper.Path();
+            path.strokeColor = 'black';
+            path.add(event.point);
+        }
+
+        tool.onMouseDrag = function(event) {
+            path.add(event.point);
+        }
 	}
 </script>
 </head>
